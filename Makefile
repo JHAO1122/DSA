@@ -8,10 +8,10 @@ CXXFLAGS = -Wall -std=c++20 -O2
 LDFLAGS =
 
 # 定义目标文件
-TARGET = hello
+TARGET = chicken
 
 # 定义源文件
-SOURCES = hello.cpp
+SOURCES = chicken.cpp
 
 # 定义对象文件
 OBJECTS = $(SOURCES:.cpp=.o)
