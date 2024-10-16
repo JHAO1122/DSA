@@ -4,7 +4,12 @@
 int main()
 {
     List<int> list = {1,2,3,4,5};//测试初始化链表
-    list.clear();//clear清空数据测试
+    list.clear();
+    for (auto &x : list)
+    {
+        std::cout << x << "\t" ;
+    }
+    std::cout << std::endl;//clear清空数据测试
 
     List<int> lst;
     std::cout << lst.empty() <<std::endl;//判断链表是否为空
