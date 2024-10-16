@@ -1,0 +1,113 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+	basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+	
+	\pagestyle{fancy}
+	\fancyhead{}
+	\lhead{田佳豪, 3230105412}
+	\chead{数据结构与算法第四次作业}
+	\rhead{Oct.16th, 2024}
+	
+	\section{测试程序的设计思路}
+	
+	1.我初始化了一个名为List的链表，之后用clear()清空此链表，测试初始化和清空操作。
+	
+	2.我声明了一个空链表叫lst，并判断是否为空，测试判断链表是否为空操作。
+	
+	3.我使用pushback配合for循环以及pushfront给链表赋值，测试左值右值插入功能，同时可以测试insert()。	
+	
+	4.我调用了popfront和popback来测试其功能，同时测试erase。
+	
+	5.我调用back和front，来验证返回数据是否准确以及可修改性。
+	
+	6.我调用size返回lst的大小来测试其功能。
+	
+	7.我用std::move()移动构造链表lst2，并输出lst2进行检验。
+	
+	8.我重新定义了一个lst3并初始化，之后用赋值lst4验证拷贝构造函数，输出lst3和lst4检验。
+	
+	9.我使用一个for循环和指针自增操作来检验前置自增运算符和后置自增运算符。
+	\section{测试的结果}
+	1.初始化链表list后clear，输出链表发现为空，测试成功。
+	
+	2.声明一个链表lst，用empty()检验，输出1，发现为空，测试成功。
+	
+	3.pushback for i from 0 to 9 后pushfront 100，输出100 0 ... 9 测试成功。 
+	
+	4.popfront和popback后输出0 ... 8，第一和最后一个元素被删除，测试成功。
+	
+	5.back后输出8，back测试成功；front成功将第一个修改，输出100 1 ... 8测试成功。
+	
+	6.size返回链表大小，输出值为8，符合，测试成功；
+	
+	7.调用移动构造函数后输出lst2，与lst1保持一致，测试成功。
+	
+	8.调用拷贝构造函数后输出lst3与lst4，发现二者一致，并将lst4最后一个数据删除后lst3不变，成功深拷贝。
+	
+	9.通过输出lst3和lst4验证前置自增运算符和后置自增运算符，输出结果无误，测试成功。
+	
+	输出代码块如下：
+	\begin{lstlisting}
+	
+	
+	1
+	100	0	1	2	3	4	5	6	7	8	9	
+	0	1	2	3	4	5	6	7	8	
+	8
+	100	1	2	3	4	5	6	7	8	
+	9
+	100	1	2	3	4	5	6	7	8	
+	1	2	3	4	5	
+	1	2	3	4	5	
+	1	2	3	4	5	
+	1	2	3	4	
+	
+	\end{lstlisting}
+	
+		
+	测试结果一切正常。
+	
+	我用 valgrind 进行测试，发现没有发生内存泄露。
+	
+	
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
+
