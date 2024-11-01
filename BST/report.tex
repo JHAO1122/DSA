@@ -1,0 +1,134 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+	basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+	
+	\pagestyle{fancy}
+	\fancyhead{}
+	\lhead{田佳豪, 3230105412}
+	\chead{数据结构与算法第五次作业}
+	\rhead{Oct.16th, 2024}
+	
+	\section{测试程序的设计思路}
+	\begin{verbatim}
+			void remove(const Comparable &x, BinaryNode *&t) {
+			BinaryNode *c = t; //子节点
+			BinaryNode *p = nullptr; //父节点
+			while (c != nullptr) {//不为空树
+				if (x < c->element) {
+					p = c;
+					c = c->left;
+				} else if (x > c->element) {
+					p = c;
+					c = c->right;//查找待删除节点
+				} else { 
+					if (c->left != nullptr && c->right != nullptr) { 
+						BinaryNode *minNode = detachMin(c->right);//找到右子树的最小节点
+						c->element = minNode->element; 
+						delete minNode; 
+					} else { 
+						BinaryNode *oldNode = c;
+						c = (c->left != nullptr) ? c->left : c->right;//实现节点的替换和删除 
+						if (p == nullptr) { 
+							t = c; 
+						} else if (p->left == oldNode) {
+							p->left = c; //如果原查找到的节点在父节点的左边，则将现子节点连接到原父节点左边
+						} else {
+							p->right = c; //如果原查找到的节点在父节点的右边，则将现子节点连接到原父节点右边
+						}
+						delete oldNode; //释放内存
+					}
+					return; 
+				}
+			}
+		}
+		
+		BinaryNode *detachMin(BinaryNode *&t) {
+			if (t == nullptr) return nullptr;
+			BinaryNode *temp1 = nullptr; //父节点
+			BinaryNode *temp2 = t;//子节点 
+			while (temp2->left != nullptr) {
+				temp1 = temp2;
+				temp2 = temp2->left;//循环找到最小值
+			}
+			if (temp1 != nullptr) {
+				temp1->left = temp2->right; //实现节点连接更新，将待删除节点的右数连接到父节点左边
+			} else {
+				t = temp2->right; 
+			}
+			return temp2; 
+		}
+	\end{verbatim}
+	 
+	1.我首先创建了一个detachMin函数，用于查找待删除节点有两个子节点的情况时的右子树的最小值，
+	更新节点，删除后返回；
+	
+	2.对于待删除节点只有一个或者没有子节点的情况，我在remove函数中直接处理；
+	
+	\section{测试的结果}
+	
+	测试结果一切正常。
+	
+	1.我调用insert()函数依次输入10 5 15 3 7 12 18,得到树的遍历为3 5 7 10 12 15 18
+	
+	2.调用remove对待删除节点没有左右两个子节点的情况测试，remove(7)后树为3 5 10 12 15 18
+	
+	3.调用remove对待删除节点有左右两个子树的情况测试，remove(10)后树为3 5 12 15 18
+	
+	我用 valgrind 进行测试，发现没有发生内存泄露。
+	
+    输出代码块如下：
+    \begin{verbatim}
+    Tree after removing 7:
+    3
+    5
+    10
+    12
+    15
+    18
+    Tree after removing 10:
+    3
+    5
+    12
+    15
+    18
+	\end{verbatim}
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
