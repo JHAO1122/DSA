@@ -1,5 +1,5 @@
 run:
-	g++ test.cpp -o BST -std=c++20 -o2
+	g++ test.cpp -o2
 	./a.out
 
 report:
