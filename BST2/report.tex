@@ -1,0 +1,73 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+	basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+	
+	\pagestyle{fancy}
+	\fancyhead{}
+	\lhead{田佳豪, 3230105412}
+	\chead{数据结构与算法第六次作业}
+	\rhead{Oct.16th, 2024}
+	
+	\section{测试程序的设计思路}
+	1.我首先写了一个height()函数，如果节点为空返回0，否则返回节点的高度。
+	
+	2.之后我开始写balance()函数，分四种情况讨论：
+	
+	如果是左孩子的左子树过高，则进行一次左边的单旋转；
+	
+	如果是右孩子的右子树过高，则进行一次右边的单旋转；
+	
+	如果是左孩子的右子树过高，则进行一次左-右的双旋转；
+	
+	如果是右孩子的左子树过高，则进行一次右-左的双旋转；
+	
+	3.左边的单旋转：将左孩子的右子树给父节点，随后将原左子节点变为原父节点的父节点，之后更新节点。
+	
+	4.右边的单旋转：将右孩子的左子树给父节点，随后将原右子节点变为原父节点的父节点，之后更新节点。
+	
+	5.左-右双旋转：对父节点的左子节点进行一次单旋转，再对父节点进行一次单旋转。
+	
+	6.右-左双旋转：对父节点的右子节点进行一次单旋转，再对父节点进行一次单旋转。
+
+	7.更改remove()函数，使得树以AVL tree的方式平衡。
+	
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
