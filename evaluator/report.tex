@@ -1,0 +1,172 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+	basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+	
+	\pagestyle{fancy}
+	\fancyhead{}
+	\lhead{田佳豪, 3230105412}
+	\chead{数据结构与算法项目作业报告}
+	\rhead{Nov.22th, 2024}
+	
+	\section{测试程序的设计思路}
+	    
+	\subsection{混合运算的计算器的设计}
+	
+	\subsubsection{transfer类}
+	
+	\paragraph{前期准备:}我设计了几个函数为我之后的设计调用函数做准备		
+	
+	1.构造函数，得到需要转化表达式的字符串
+	
+	2.isoperator()函数，判断是否为加减乘除的运算符的函数
+	
+	3.operatorrank()函数，比较各个运算符的优先级
+	
+	4.count()函数，返回在字符串某位置及之前的某字符的数量和
+	
+	\paragraph{islegal()函数:}
+	
+	我设计了布尔函数一个判断表达式是否合法的函数，如果出现包括运算符连续使用、括号不匹配、表达式以运算符开头或结尾、除数为0的情况，则返回0，否则中缀表达式合法，返回1
+	
+	\paragraph{change()函数}
+	
+	我设计了一个change()函数，可以将中缀表达式转化为后缀表达式并返回后者	
+	
+	1.首先声明一个运算符栈，和一个字符串，字符串作为输出
+	
+	2.如果遇到了数字，则直接输出到字符串中
+	
+	3.如果遇到了左括号，则直接压入栈中
+	
+	4.如果遇到了右括号，则把栈顶的运算符弹出，直到遇到左括号
+	
+	5.如果遇到了运算符，则比较它与栈顶运算符的优先级，如果前者小则弹出栈顶运算符
+	
+	\subsubsection{solution类}
+
+	\paragraph{solution()函数}
+	
+	我设计了一个solution()函数，用于计算后缀表达式的值
+	
+	1.首先声明一个运算数栈
+	
+	2.开始遍历后缀表达式，遇到空格什么都不做
+	
+	3.如果遇到连续的数字和小数点、负号、科学计数法组成的字符串，则将字符串转化为数字后压入栈中
+
+	4.如果遇到了运算符，则将栈顶的两个数字弹出，进行运算，运算后将结果压入栈中
+	
+	5.运算结束后数字栈中仅有一个数字，即为计算结果，返回此数字，完成计算	
+	\subsection{主函数的设计}
+	
+	\subsubsection{main()函数}
+	
+	我设计了一个主函数，使用一个for循环，让用户输入字符串作为测试样例。首先用islegal()函数判断用户输入的字符串的合法性，如果不合法则直接输出"ILLEGAL"；如果合法，则调用change()函数将中缀表达式转化为后缀表达式，输出后缀表达式，然后调用solution()函数计算后缀表达式的值。
+	
+	\subsection{基于负数和科学计数法的考虑}
+	
+	1.首先在legal()函数中，遇到某运算符和减号的连续运算不会返回0，而是将减号认为成负号
+	
+	2.在change()函数中，如果输入的是数字，则考虑科学计数法，将数字与e和e后面的幂次直接加到后缀表达式
+	
+	3.如果输入的是左括号或运算符且其后面有负号，则将运算符压栈并将负号加到后缀表达式并跳过处理减号
+	
+	4.在solution()函数中如果遇到负数或者科学计数法则直接压栈，进行后续计算即可
+	
+	\section{测试的结果}
+	
+	\begin{lstlisting}
+		root@tian:~/.vscode/evl# g++ main.cpp -o main
+		root@tian:~/.vscode/evl# ./main
+		Please put a string as a test1
+		1++1
+		ILLEGAL
+		Please put a string as a test2
+		(+2-1)  
+		ILLEGAL
+		Please put a string as a test3
+		3(2+1)
+		ILLEGAL
+		Please put a string as a test4
+		((3+4)
+		ILLEGAL
+		Please put a string as a test5
+		-3.1415926/0*2
+		ILLEGAL
+		Please put a string as a test6
+		+12-1
+		ILLEGAL
+		Please put a string as a test7
+		(3-2)*(4-3)/(2-5)
+		after transfering:
+		3 2 - 4 3 - * 2 5 - / 
+		the result of7
+		-0.333333
+		Please put a string as a test8
+		((3+-2)+(4-2))*((3-2)-4)       
+		after transfering:
+		3 -2 + 4 2 - + 3 2 - 4 - * 
+		the result of8
+		-9
+		Please put a string as a test9
+		3+1/2*4-2                           
+		after transfering:
+		3 1 2 / 4 * + 2 - 
+		the result of9
+		3
+		Please put a string as a test10
+		(-3.1415926+-2.71828)*2e2/3*3e-1+1-2
+		after transfering:
+		-3.1415926 -2.71828 + 2e2 * 3 / 3e-1 * 1 + 2 - 
+		the result of10
+		-118.197
+	\end{lstlisting}
+	
+	前六次测试为表达式非法性测试，后四次测试则为合法性复杂表达式计算结果测试。
+	
+	测试结果一切正常。
+	
+	四则混合运算器设计成功。
+	
+	我用 valgrind 进行测试，发现没有发生内存泄露。
+	
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
