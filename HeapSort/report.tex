@@ -62,32 +62,32 @@
 	\begin{tabular}{|c|c|c|}
 	\hline
 	sequence & my heapsort time & std::sortheap time \\ \hline
-	random sequence & 668 & 794 \\ \hline
-	ordered sequence & 494 & 838 \\ \hline
-	reverse sequence & 843 & 532 \\ \hline
-	repetitive sequence & 742 & 713 \\ \hline
+	random sequence & 122 & 200 \\ \hline
+	ordered sequence & 50 & 48 \\ \hline
+	reverse sequence & 62 & 51 \\ \hline
+	repetitive sequence & 81 & 67 \\ \hline
 	
 	\end{tabular}
 
 	输出代码块如下：
 	\begin{lstlisting}
-	668ms
-	1
-	494ms
-	1
-	843ms
-	1
-	742ms
-	1
-	794ms
-	838ms
-	532ms
-	713ms
+122ms
+1
+50ms
+1
+62ms
+1
+81ms
+1
+200ms
+48ms
+51ms
+67ms
 	\end{lstlisting}
 	
 	
 		
-	我的一些分析：我的HeapSort和std::sortheap()函数在排序长度为1000000的四种序列中的表现相近，均在500ms~1000ms之间
+	我的一些分析：我的HeapSort和std::sortheap()函数在排序长度为1000000的四种序列中的表现相近，均在40ms~200ms之间
 	根据了解，std::sortheap也是通过调用这两个函数完成的，因此我的HeapSort的时间复杂度：建堆函数的时间复杂度为O(n)
 	而popheap()的时间复杂度为O(logn),因为需要对n个元素进行pop操作，最终时间复杂度为O(nlogn) 
 	所以总体的时间复杂度为O(nlogn)
